@@ -27,6 +27,8 @@ resource "aws_lb_target_group" "tg" {
 
   tags = var.tags
 }
+
+// listener rule http
 resource "aws_lb_listener" "http" {
   count             = var.listener_http ? 1 : 0
   load_balancer_arn = aws_lb.alb.arn
@@ -39,6 +41,7 @@ resource "aws_lb_listener" "http" {
   }
 }
 
+// listener rule https
 resource "aws_lb_listener" "https" {
   count             = var.listener_https ? 1 : 0
   load_balancer_arn = aws_lb.alb.arn

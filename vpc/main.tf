@@ -1,6 +1,6 @@
 // create a new vpc
 resource "aws_vpc" "vpc" {
-  cidr_block           = var.cidr_block
+  cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
   enable_dns_support   = true
 
@@ -38,11 +38,10 @@ resource "aws_subnet" "private" {
 // create internet gateway
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
-}
   tags = {
     Name = "Internet Gateway"
   }
-
+}
 // Create a route table for public subnets
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id

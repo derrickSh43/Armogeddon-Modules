@@ -16,3 +16,9 @@ variable "public_subnet_cidrs" {
 variable "private_subnet_cidrs" {
   description = "CIDR blocks for private subnets in each AZ"
 }
+
+variable "vpc_tags" {
+  type = string
+  description = "vpc tags"
+  default = "vpc"
+}
