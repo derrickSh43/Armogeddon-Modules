@@ -20,6 +20,15 @@ resource "aws_autoscaling_group" "ec2_asg" {
   }
 }
 
+# Read and modify the user data script
+data "template_file" "userdata_script" {
+  template = file("${path.module}/userdata.sh")
+
+  vars = {
+    loki_ip = aws_instance.loki_server.private_ip
+  }
+}
+
 resource "aws_launch_template" "ec2_launch_template" {
   name          = "custom-ec2-launch-template"
   image_id      = var.image_id
@@ -30,7 +39,8 @@ resource "aws_launch_template" "ec2_launch_template" {
     security_groups             = [aws_security_group.ec2_sg.id]
   }
 
-  user_data = filebase64("userdata.sh")
+  # Use the rendered user data script with Base64 encoding
+  user_data = base64encode(data.template_file.userdata_script.rendered)
 
   tag_specifications {
     resource_type = "instance"
